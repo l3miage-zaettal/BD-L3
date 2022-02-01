@@ -1,13 +1,13 @@
 package fr.litopia.main;
 
+import fr.litopia.dao.AnimalDAO;
+import fr.litopia.modele.Animal;
+import fr.litopia.utils.TheConnection;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Set;
-
-import fr.litopia.dao.AnimalDAO;
-import fr.litopia.modele.Animal;
-import fr.litopia.utils.TheConnection;
 
 public class ZooApp {
 
