@@ -18,10 +18,27 @@ public class AnimalDAO extends DAO<Animal> {
 
 	@Override
 	public boolean create(Animal obj)throws SQLException {
+		//Enregistrement de l'animal
+		String sql = "INSERT INTO LESANIMAUX (NOMA,SEXE,TYPE_AN,FONCTION_CAGE,PAYS,ANNAIS,NOCAGE) VALUES (?,?,?,?,?,?,?)";
+		PreparedStatement prepare = this.conn.prepareStatement(sql);
+		prepare.setString(1, obj.getNomA());
+		prepare.setString(2, obj.getSexe());
+		prepare.setString(3, obj.getType());
+		prepare.setString(4, obj.getFonctionCage());
+		prepare.setString(5, obj.getPays());
+		prepare.setInt(6, obj.getAnNais());
+		prepare.setInt(7, obj.getLaCage().getNoCage());
 
-		/* TO DO */
+		//Enregistrement des maladies
+		for (String maladie : obj.getMaladies()){
+			String sqlMal = "INSERT INTO LESMALADIES (NOMA,NOMM) VALUES (?,?)";
+			PreparedStatement prepareMal = this.conn.prepareStatement(sqlMal);
+			prepareMal.setString(1, obj.getNomA());
+			prepareMal.setString(2, maladie);
+			prepareMal.executeUpdate();
+		}
 
-		return true;
+		return prepare.executeUpdate() == 1;
 	}
 
 	@Override
@@ -60,7 +77,8 @@ public class AnimalDAO extends DAO<Animal> {
 			//Récupération de la cage
 			//@TODO : faire le read de CageDAO
 			CageDAO cageDAO = new CageDAO(this.conn);
-			animal.setLaCage(cageDAO.read(rs.getString("NOCAGE")));
+			animal.setLaCage(cageDAO.read(rs.getInt("NOCAGE")));
+
 
 
 			//Récupération des maladies
