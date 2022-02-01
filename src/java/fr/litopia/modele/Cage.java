@@ -55,4 +55,9 @@ public class Cage {
 public void setGardiens(Set<Gardien> l) {
 	    lstGardiens = l;
 	  }
+
+      @Override
+      public String toString() {
+        return "Cage [noCage=" + noCage + ", fonction=" + fonction + ", noAlle=" + noAlle + "]";
+      }
 }
