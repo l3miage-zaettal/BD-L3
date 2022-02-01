@@ -62,7 +62,7 @@ public class AnimalDAO extends DAO<Animal> {
 			String typeAn = rs.getString("TYPE_AN");
 			String fonctionCage = rs.getString("FONCTION_CAGE");
 			String pays = rs.getString("PAYS");
-			Integer annais = rs.getInt("ANNAIS");
+			int annais = rs.getInt("ANNAIS");
 
 			//Initialisation de l'animal
 			final Animal animal = new Animal();
