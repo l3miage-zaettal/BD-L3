@@ -1,10 +1,8 @@
 package fr.litopia.modele;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Animal {
-  private Integer an_id;
   private String nomA;
   private String sexe;
   private String type;
@@ -15,21 +13,12 @@ public class Animal {
   private Set<String> lstMaladies;
 
   public Animal() {
-    lstMaladies = new HashSet<String>();
   }
 
-  public Animal(Integer id) {
-    this();
-    an_id = id;
-  }
-  
-  public long getAn_id() {
-    return an_id;
+  public Animal(String n) {
+    nomA = n;
   }
 
-  public void setAn_id(Integer id) {
-    an_id = id;
-  }
 
   public String getNomA() {
     return nomA;
