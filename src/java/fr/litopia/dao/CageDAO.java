@@ -1,12 +1,13 @@
 package fr.litopia.dao;
 
+import fr.litopia.modele.Cage;
+import fr.litopia.modele.Gardien;
+
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
-
-import fr.litopia.modele.Cage;
-import fr.litopia.modele.Gardien;
 
 
 public class CageDAO extends DAO<Cage> {
@@ -44,7 +45,19 @@ public class CageDAO extends DAO<Cage> {
 	
 	@Override
 	public Set<Cage> readAll() throws SQLException {
-		return null;
+		Set<Cage> cages = new HashSet<>();
+		String sql = "SELECT * FROM LESCAGES";
+		ResultSet rs = this.conn.prepareStatement(sql).executeQuery();
+		while (rs.next()) {
+			Integer noCage = rs.getInt("NOCAGE");
+			String fonctionCage = rs.getString("FONCTION");
+			Integer noAllee = rs.getInt("NOALLEE");
+			Cage cage = new Cage(noCage);
+			cage.setFonction(fonctionCage);
+			cage.setNoAlle(noAllee);
+			cages.add(cage);
+		}
+		return cages;
 	}
 
 	@Override
