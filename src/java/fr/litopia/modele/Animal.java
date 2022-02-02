@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class Animal {
   private String nomA;
-  private String sexe;
+  private Sexe sexe;
   private String type;
   private String fonction_cage;
   private String pays;
@@ -29,11 +29,11 @@ public class Animal {
   }
 
   
-  public String getSexe() {
+  public Sexe getSexe() {
     return sexe;
   }
 
-  public void setSexe(String s) {
+  public void setSexe(Sexe s) {
     sexe = s;
   }
  
@@ -66,6 +66,7 @@ public class Animal {
   }
  
   public void setAnNais(int a) {
+    if(a<2000) throw new IllegalArgumentException("Année de naissance invalide");
     anNais = a;
   }
 
