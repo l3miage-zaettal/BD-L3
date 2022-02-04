@@ -1,6 +1,8 @@
 package fr.litopia.utils;
 
 import java.io.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  *
@@ -84,7 +86,6 @@ public class LectureClavier {
             return(stdin.readLine());
         } catch (Exception e) {
             erreurEntree(e,"chaine de caracteres");
-            
             return null;
         }
     }
@@ -163,5 +164,23 @@ public class LectureClavier {
         e.printStackTrace();
         System.exit(1);
     }
-    
+
+    /**
+     * Methode qui lis un integer dans la console tant que celui-ci n'est pas un entier
+     * @return Integer
+     */
+    public static Integer lireEntier(int min) {
+        Scanner sc = new Scanner(System.in);
+        Integer entier = -1;
+        while (entier<min) {
+            try {
+                if (entier<min) System.out.println("Veuillez entrer un entier supérieur à "+min);
+                entier = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Veuillez entrer un entier positif");
+                sc.next();
+            }
+        }
+        return entier;
+    }
 } // LectureClavier

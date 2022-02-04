@@ -5,16 +5,18 @@ import fr.litopia.dao.CageDAO;
 import fr.litopia.modele.Animal;
 import fr.litopia.modele.Cage;
 import fr.litopia.modele.Sexe;
+import fr.litopia.utils.LectureClavier;
 import fr.litopia.utils.TheConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.InputMismatchException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import static fr.litopia.modele.Sexe.askSexe;
+import static fr.litopia.utils.LectureClavier.lireOuiNon;
 
 public class ZooApp {
 
@@ -124,26 +126,41 @@ public class ZooApp {
         System.out.println("Entrez le pays d'origine de l'animal");
         String pays = sc.nextLine();
         System.out.println("Entrez l'année de naissance de l'animal");
-		int anneeNaissance = lireEntier(2000);
+		int anneeNaissance = LectureClavier.lireEntier(2000);
 
         CageDAO cDAO = new CageDAO(TheConnection.getInstance());
         System.out.println("Entrez le NoCage de la cage parmi les suivants :");
         Set<Cage> lesCages = cDAO.readAll();
         for (Cage c : lesCages) {
             System.out.println(c.toString());
+            System.out.println("---");
         }
         //recuperer le NoCage tant que le numero ne correspond pas a une cage existante
-        Integer NoCage = lireEntier(0);
+        Integer NoCage = LectureClavier.lireEntier(0);
 
         //Conversion du set de cage en un tableau de numero de cage
         List<Integer> lesNoCages = lesCages.stream().map(Cage::getNoCage).toList();
         while (!lesNoCages.contains(NoCage)) {
             System.out.println("Ce numero de cage n'existe pas, veuillez en entrer un autre");
-            NoCage = lireEntier(0);
+            NoCage = LectureClavier.lireEntier(0);
         }
         final Integer finalNoCage = NoCage;
-		//Filtration du set de cage pour récupérer la cage correspondante
+        //Filtrage du set de cage pour récupérer la cage correspondent
         Cage cage = lesCages.stream().filter(c -> c.getNoCage().equals(finalNoCage)).findFirst().get();
+
+        //Demande de création de maladie
+        boolean maladie = lireOuiNon("Voulez-vous ajouter une/des maladie(s) à l'animal ? (O/N)");
+        final Set<String> lesMaladies = new HashSet<>();
+        if (maladie) {
+            boolean maladieSuivante = true;
+            do{
+                System.out.println("Entrez le nom de la maladie");
+                String nomMaladie = sc.nextLine();
+                maladieSuivante = lireOuiNon("Voulez-vous ajouter une autre maladie(s) à l'animal ? (O/N)");
+                lesMaladies.add(nomMaladie);
+            }while (maladieSuivante);
+        }
+
         a.setLaCage(cage);
         a.setFonctionCage(cage.getFonction());
         a.setNomA(nom);
@@ -151,27 +168,9 @@ public class ZooApp {
         a.setType(type);
         a.setPays(pays);
         a.setAnNais(anneeNaissance);
+        a.setMaladies(lesMaladies);
         return a;
     }
-
-	/**
-	 * Methode qui lis un integer dans la console tant que celui-ci n'est pas un entier
-	 * @return Integer
-	 */
-	private static Integer lireEntier(int min) {
-		Scanner sc = new Scanner(System.in);
-		Integer entier = -1;
-		while (entier<min) {
-			try {
-				if (entier<min) System.out.println("Veuillez entrer un entier supérieur à "+min);
-				entier = sc.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.println("Veuillez entrer un entier positif");
-				sc.next();
-			}
-		}
-		return entier;
-	}
 
     /**
      * Ajouter une cage à la liste de cages gardés par un gardien

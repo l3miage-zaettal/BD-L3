@@ -4,6 +4,7 @@ import fr.litopia.modele.Cage;
 import fr.litopia.modele.Gardien;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -24,6 +25,19 @@ public class CageDAO extends DAO<Cage> {
 	
 	@Override
 	public Cage read(Object obj) throws SQLException {
+		Integer noCage = (Integer) obj;
+		String sql = "SELECT FONCTION, NOALLEE FROM LESCAGES WHERE NOCAGE = ?";
+		PreparedStatement ps = this.conn.prepareStatement(sql);
+		ps.setInt(1, noCage);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			String fonction = rs.getString("FONCTION");
+			Integer noAllee = rs.getInt("NOALLEE");
+			Cage cage = new Cage(noCage);
+			cage.setFonction(fonction);
+			cage.setNoAlle(noAllee);
+			return cage;
+		}
 		return null;
 	}
 	

@@ -101,7 +101,8 @@ public class Animal {
     if (anNais != 0)
       stringBuilder.append("Année de naissance:").append(anNais).append('\n');
     if(getLaCage() != null)
-      stringBuilder.append(getLaCage()).append('\n');
+      stringBuilder.append("Cage:\n").append(getLaCage()).append('\n');
+    stringBuilder.append("Nombre de maladies:").append(getMaladies().size()).append('\n');
     if(getMaladies().size() != 0 ) {
       stringBuilder.append("Maladies:").append('\n');
       for (String mal : getMaladies()) {

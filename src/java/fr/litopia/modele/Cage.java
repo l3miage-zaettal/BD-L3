@@ -65,6 +65,11 @@ public class Cage {
 
     @Override
     public String toString() {
-        return "Cage [noCage=" + noCage + ", fonction=" + fonction + ", noAlle=" + noAlle + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("\tNoCage:").append(noCage).append('\n');
+        sb.append("\tFonction:").append(fonction).append('\n');
+        sb.append("\tNoAlle:").append(noAlle);
+        //return "Cage [noCage=" + noCage + ", fonction=" + fonction + ", noAlle=" + noAlle + "]";
+        return sb.toString();
     }
 }

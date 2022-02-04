@@ -22,7 +22,7 @@ public class AnimalDAO extends DAO<Animal> {
 	@Override
 	public boolean create(Animal obj)throws SQLException {
 		//Enregistrement de l'animal
-		String sql = "INSERT INTO LESANIMAUX (NOMA,SEXE,TYPE_AN,FONCTION_CAGE,PAYS,ANNAIS,NOCAGE) VALUES (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO LESANIMAUX (NOMA,SEXE,TYPE_AN,FONCTION_CAGE,PAYS,ANNAIS,NOCAGE,NB_MALADIES) VALUES (?,?,?,?,?,?,?,?)";
 		PreparedStatement prepare = this.conn.prepareStatement(sql);
 		prepare.setString(1, obj.getNomA());
 		prepare.setString(2, obj.getSexe().toString());
@@ -31,6 +31,10 @@ public class AnimalDAO extends DAO<Animal> {
 		prepare.setString(5, obj.getPays());
 		prepare.setInt(6, obj.getAnNais());
 		prepare.setInt(7, obj.getLaCage().getNoCage());
+		prepare.setInt(8, obj.getMaladies().size());
+
+		int results = prepare.executeUpdate();
+		int resultMaladies = 0;
 
 		//Enregistrement des maladies
 		if(obj.getMaladies() != null) {
@@ -39,16 +43,15 @@ public class AnimalDAO extends DAO<Animal> {
 				PreparedStatement prepareMal = this.conn.prepareStatement(sqlMal);
 				prepareMal.setString(1, obj.getNomA());
 				prepareMal.setString(2, maladie);
-				prepareMal.executeUpdate();
+				resultMaladies+=prepareMal.executeUpdate();
 			}
 		}
 
-		return prepare.executeUpdate() == 1;
+		return results == 1 && resultMaladies == obj.getMaladies().size();
 	}
 
 	@Override
 	public Animal read(Object obj) throws SQLException{
-
 		return null;
 	}
 
@@ -74,7 +77,7 @@ public class AnimalDAO extends DAO<Animal> {
 			animal.setNomA(nomA);
 			animal.setSexe(sexe);
 			animal.setType(typeAn);
-			animal.setType(fonctionCage);
+			animal.setFonctionCage(fonctionCage);
 			animal.setPays(pays);
 			animal.setAnNais(annais);
 			animaux.add(animal);
